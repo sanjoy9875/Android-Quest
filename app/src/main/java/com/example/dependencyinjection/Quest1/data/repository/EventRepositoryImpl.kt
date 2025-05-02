@@ -1,7 +1,7 @@
-package com.example.dependencyinjection.data.repository
+package com.example.dependencyinjection.Quest1.data.repository
 
-import com.example.dependencyinjection.data.model.Event
-import com.example.dependencyinjection.data.remote.ApiService
+import com.example.dependencyinjection.Quest1.data.model.Event
+import com.example.dependencyinjection.Quest1.data.remote.ApiService
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -1,4 +1,4 @@
-package com.example.dependencyinjection.presentation
+package com.example.dependencyinjection.Quest1.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -30,8 +30,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.dependencyinjection.data.model.Event
+import com.example.dependencyinjection.Quest1.data.model.Event
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

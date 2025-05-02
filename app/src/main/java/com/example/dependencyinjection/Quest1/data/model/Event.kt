@@ -1,4 +1,4 @@
-package com.example.dependencyinjection.data.model
+package com.example.dependencyinjection.Quest1.data.model
 
 data class Event(
     val userId: Int,

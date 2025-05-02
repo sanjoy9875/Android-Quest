@@ -52,31 +52,54 @@ android {
 }
 
 dependencies {
-
+    // Kotlin and Android core
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.activity.compose)
+
+    // Compose basics
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // Compose Navigation
+    implementation(libs.navigation.compose)
+
+    // Lifecycle + ViewModel
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
+
+    // Hilt (DI)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
+
+    // Retrofit for networking
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    // Room (Database)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
+
+    // Coroutines
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
+
+    // Unit testing
     testImplementation(libs.junit)
+
+    // Android testing
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Compose testing
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.hilt.navigation.compose)
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-
-    implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.lifecycle.runtime.ktx)
-
-    implementation(libs.compose.ui)
-    implementation(libs.navigation.compose)
+    implementation("io.coil-kt:coil-compose:2.2.2")
 }

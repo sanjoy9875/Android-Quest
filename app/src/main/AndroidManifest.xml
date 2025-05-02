@@ -16,13 +16,12 @@
         android:theme="@style/Theme.DependencyInjection"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".Quest2.presentation.viewmodel.ProductActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.DependencyInjection">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

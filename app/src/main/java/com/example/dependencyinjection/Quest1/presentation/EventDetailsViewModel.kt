@@ -1,12 +1,12 @@
-package com.example.dependencyinjection.presentation
+package com.example.dependencyinjection.Quest1.presentation
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dependencyinjection.data.model.Event
-import com.example.dependencyinjection.data.repository.EventRepository
+import com.example.dependencyinjection.Quest1.data.model.Event
+import com.example.dependencyinjection.Quest1.data.repository.EventRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

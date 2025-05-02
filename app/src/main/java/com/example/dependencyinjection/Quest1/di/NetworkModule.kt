@@ -1,6 +1,6 @@
-package com.example.dependencyinjection.di
+package com.example.dependencyinjection.Quest1.di
 
-import com.example.dependencyinjection.data.remote.ApiService
+import com.example.dependencyinjection.Quest1.data.remote.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,6 +1,6 @@
-package com.example.dependencyinjection.data.remote
+package com.example.dependencyinjection.Quest1.data.remote
 
-import com.example.dependencyinjection.data.model.Event
+import com.example.dependencyinjection.Quest1.data.model.Event
 import retrofit2.http.GET
 import retrofit2.http.Path
 
