@@ -6,6 +6,7 @@ import com.example.dependencyinjection.Quest2.domain.model.Product
 import com.example.dependencyinjection.Quest2.domain.model.SearchParams
 import com.example.dependencyinjection.Quest2.domain.repository.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -31,26 +32,29 @@ class ProductSearchViewModel @Inject constructor(
         SearchParams(q, c, a)
     }
 
-    val products: StateFlow<List<Product>> = merge(
+    private val refreshParams: Flow<SearchParams> = merge(
         params,
         manualRefresh.map {
             SearchParams(query.value, category.value, ascending.value)
         }
     )
-        .flatMapLatest { params ->
-            repository.getProducts(params)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val products: StateFlow<List<Product>> = refreshParams
+        .flatMapLatest { searchParams ->
+            repository.getProducts(searchParams)
         }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            emptyList()
+        )
+
 
     init {
         viewModelScope.launch {
-            merge(
-                params,
-                manualRefresh.map {
-                    SearchParams(query.value, category.value, ascending.value)
-                }
-            ).collectLatest { params ->
-                repository.refresh(params)
+            refreshParams.collectLatest { searchParams ->
+                repository.refresh(searchParams)
             }
         }
     }
