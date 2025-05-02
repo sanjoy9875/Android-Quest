@@ -27,11 +27,10 @@ fun ProductSearchScreen() {
     val viewModel: ProductSearchViewModel = hiltViewModel()
     val products by viewModel.products.collectAsState()
 
+    val selectedCategory by viewModel._category.collectAsState()
+
     Column(Modifier.padding(16.dp)) {
         var text by remember { mutableStateOf("") }
-        var categoryBeauty by remember { mutableStateOf(true) }
-        var categoryFurniture by remember { mutableStateOf(true) }
-        var categoryGroceries by remember { mutableStateOf(true) }
 
         OutlinedTextField(
             value = text,
@@ -49,7 +48,6 @@ fun ProductSearchScreen() {
             Button(
                 onClick = {
                     text = ""
-                    categoryBeauty = !categoryBeauty
                     viewModel.onCategoryChanged("beauty")
             }) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -57,12 +55,12 @@ fun ProductSearchScreen() {
                         text = "Beauty",
                         fontSize = 12.sp
                     )
-                    if (categoryBeauty){
+                    if (selectedCategory != "beauty") {
                         Spacer(modifier = Modifier.width(1.dp))
                         Icon(
                             modifier = Modifier.size(12.dp),
                             painter = painterResource(id = R.drawable.ic_add),
-                            contentDescription = "Furniture icon"
+                            contentDescription = "beauty"
                         )
                     }
                 }
@@ -71,7 +69,6 @@ fun ProductSearchScreen() {
             Button(
                 onClick = {
                 text = ""
-                categoryFurniture = !categoryFurniture
                 viewModel.onCategoryChanged("furniture")
                 }
             ) {
@@ -80,7 +77,7 @@ fun ProductSearchScreen() {
                         text = "Furniture",
                         fontSize = 12.sp
                     )
-                    if (categoryFurniture){
+                    if (selectedCategory != "furniture"){
                         Spacer(modifier = Modifier.width(1.dp))
                         Icon(
                             modifier = Modifier.size(12.dp),
@@ -94,7 +91,6 @@ fun ProductSearchScreen() {
             Button(
                 onClick = {
                 text = ""
-                categoryGroceries = !categoryGroceries
                 viewModel.onCategoryChanged("groceries")
             }
             ) {
@@ -103,7 +99,7 @@ fun ProductSearchScreen() {
                         text = "Groceries",
                         fontSize = 12.sp
                     )
-                    if (categoryGroceries){
+                    if (selectedCategory != "groceries"){
                         Spacer(modifier = Modifier.width(1.dp))
                         Icon(
                             modifier = Modifier.size(12.dp),
