@@ -7,18 +7,8 @@ import com.example.dependencyinjection.Quest2.data.mapper.toEntity
 import com.example.dependencyinjection.Quest2.domain.model.Product
 import com.example.dependencyinjection.Quest2.domain.model.SearchParams
 import com.example.dependencyinjection.Quest2.domain.repository.ProductRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(
