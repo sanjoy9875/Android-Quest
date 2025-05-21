@@ -1,86 +1,150 @@
 package com.example.dependencyinjection.Quest3.presentation
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.dependencyinjection.Quest3.domain.model.User
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatsScreen(viewModel: StatsViewModel = hiltViewModel()) {
-    var selectedUser by remember { mutableStateOf(viewModel.users.firstOrNull()) }
+    val titleColor = MaterialTheme.colorScheme.primary
+    val labelColor = MaterialTheme.colorScheme.onSurfaceVariant
+    val valueColor = MaterialTheme.colorScheme.primary
 
-    val totalRevenue = viewModel.calculateTotalRevenue()
-    val expensiveItem = viewModel.findMostExpensiveOrderItem()
-    val uniqueProductIds = viewModel.getAllUniqueProductIds()
-    val productSales = viewModel.getProductSalesCount()
-    val userSpending = viewModel.summarizeUserSpending()
-    val loyaltyPoints = selectedUser?.let { viewModel.trackUserLoyaltyPoints(it, 100) } ?: emptyList()
-
-    Column(modifier = Modifier.padding(16.dp)) {
-        LazyColumn(modifier = Modifier.weight(1f)) {
-            item { Text("Total Revenue: $$totalRevenue") }
-            item { Text("Most Expensive Item: ${expensiveItem.productId} costing ${expensiveItem.totalPrice}") }
-            item { Text("Unique Products: ${uniqueProductIds.size}") }
-            item {
-                Text("Product Sales:")
-                productSales.forEach { (id, count) ->
-                    Text("  $id -> $count units")
-                }
-            }
-            item {
-                Text("User Spending:")
-                userSpending.forEach { (username, amount) ->
-                    Text("  $username -> $amount")
-                }
-            }
-            item {
-                Text("Loyalty Points for ${selectedUser?.username ?: "Unknown"}:")
-                loyaltyPoints.forEachIndexed { index, points ->
-                    Text("  Order #$index -> $points points")
-                }
-            }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        "E-commerce Statistics",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        color = titleColor
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = titleColor
+                )
+            )
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        DropdownMenuBox(selectedUser, viewModel.users) {
-            selectedUser = it
+    ) { innerPadding ->
+        LazyColumn(
+            contentPadding = innerPadding,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item {
+                StatisticItem(
+                    label = "Total Revenue",
+                    // Use String.format for 2 decimal places
+                    value = "$${String.format("%.2f", viewModel.totalRevenue)}",
+                    labelColor = labelColor,
+                    valueColor = valueColor
+                )
+            }
+
+            item {
+                StatisticItem(
+                    label = "Most Expensive Item",
+                    value = "${viewModel.mostExpensiveItem.productId} - $${String.format("%.2f", viewModel.mostExpensiveItem.pricePerUnit * viewModel.mostExpensiveItem.quantity)}",
+                    labelColor = labelColor,
+                    valueColor = valueColor
+                )
+            }
+
+            item {
+                StatisticItem(
+                    label = "Unique Product IDs",
+                    value = viewModel.uniqueProductIds.joinToString(", "),
+                    labelColor = labelColor,
+                    valueColor = valueColor
+                )
+            }
+
+            item {
+                StatisticItem(
+                    label = "Product Sales",
+                    value = viewModel.productSales.entries.joinToString("\n") { "${it.key}: ${it.value}" },
+                    labelColor = labelColor,
+                    valueColor = valueColor
+                )
+            }
+
+            item {
+                StatisticItem(
+                    label = "User Spending",
+                    value = viewModel.userSpending.entries.joinToString("\n") {
+                        "${it.key}: $${String.format("%.2f", it.value)}"
+                    },
+                    labelColor = labelColor,
+                    valueColor = valueColor
+                )
+            }
+
+            item {
+                StatisticItem(
+                    label = "Loyalty Points History",
+                    value = viewModel.loyaltyPoints.joinToString(" → "),
+                    labelColor = labelColor,
+                    valueColor = valueColor
+                )
+            }
         }
     }
 }
 
 @Composable
-fun DropdownMenuBox(
-    selectedUser: User?,
-    userList: List<User>,
-    onUserSelected: (User) -> Unit
+fun StatisticItem(
+    label: String,
+    value: String,
+    labelColor: Color,
+    valueColor: Color
 ) {
-    var expanded by remember { mutableStateOf(false) }
-    Box {
-        Button(onClick = { expanded = true }) {
-            Text(selectedUser?.username ?: "Select user")
-        }
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            userList.forEach { user ->
-                DropdownMenuItem(text = { Text(user.username) }, onClick = {
-                    expanded = false
-                    onUserSelected(user)
-                })
-            }
-        }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp))
+            .padding(16.dp)
+    ) {
+        Text(
+            text = label,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = labelColor
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = value,
+            fontSize = 15.sp,
+            fontWeight = FontWeight.Medium,
+            color = valueColor,
+            lineHeight = 20.sp
+        )
     }
 }
+
+

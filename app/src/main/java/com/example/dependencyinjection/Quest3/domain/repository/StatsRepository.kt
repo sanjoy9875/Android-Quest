@@ -9,10 +9,10 @@ interface StatsRepository {
     fun getUsers(): List<User>
     fun getOrders(): List<Order>
 
-    fun calculateTotalRevenue(): BigDecimal
+    fun calculateTotalRevenue(): Double
     fun findMostExpensiveOrderItem(): OrderItem
     fun getAllUniqueProductIds(): Set<String>
     fun getProductSalesCount(): Map<String, Int>
-    fun summarizeUserSpending(): Map<String, Double>
+    fun summariseUserSpending(): Map<String, Double>
     fun trackUserLoyaltyPoints(user: User, initialPoints: Int): List<Int>
 }

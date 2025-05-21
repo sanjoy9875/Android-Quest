@@ -6,5 +6,5 @@ data class Order(
     val orderId: String,
     val userId: String,
     val items: List<OrderItem>,
-    val timestamp: LocalDateTime,
+    val timestamp: LocalDateTime
 )
